@@ -18,6 +18,7 @@ public class Shoot : MonoBehaviour
     private void OnShoot(InputAction.CallbackContext context)
     {
         Debug.Log("BANG!!!");
-        Instantiate(bullet, transform.position, transform.rotation);
+        GameObject bulletClone = Instantiate(bullet, transform.position, transform.rotation);
+        Destroy(bulletClone, 3f);
     }
 }
