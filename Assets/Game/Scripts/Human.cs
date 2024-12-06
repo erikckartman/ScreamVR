@@ -5,33 +5,29 @@ using UnityEngine.AI;
 
 public class Human : MonoBehaviour
 {
-    [SerializeField] private GameObject knife;
     [SerializeField] private Transform player;
     private NavMeshAgent agent;
+    private float speed = 1f;
     private float range = 10f;
     public int Life = 10;
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject == knife)
-        {
-            Debug.Log("KILL");
-            Destroy(gameObject);
-        }
-    }
 
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        agent.speed = speed;
     }
 
     private void Update()
     {
         float distance = Vector3.Distance(transform.position, player.transform.position);
 
-        if(distance < 10f)
+        if(distance < range)
         {
+            Vector3 direction = transform.position - player.position;
+            Vector3 fleeDestination = transform.position + direction.normalized * range;
 
+            agent.SetDestination(fleeDestination);
         }
 
         if(Life <= 0)
@@ -39,9 +35,7 @@ public class Human : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
     
-
     public void Damage(int damage)
     {
         Life -= damage;
